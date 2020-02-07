@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Are you diligent?</title>
+    </head>
+    <body>
+        <h1>Are you diligent?</h1>
+        <form action="#">
+            <label for="age">Age</label>
+            <input type="text" name="age" id="age" required value="0.68">
+
+            <label for="earning">Salaire</label>
+            <input type="text" name="earning" id="earning" required value="0.168">
+
+            <label for="schooling">Scolarité</label>
+            <input type="text" name="schooling" id="schooling" required value="0.19"> 
+
+            <button type="submit">Tester</button>
+        </form>
+
+        <p>Résultat : <span id="result"></span></p>
+    </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const myForm = document.querySelector('form');
+            const age = document.querySelector('#age');
+            const earning = document.querySelector('#earning');
+            const schooling = document.querySelector('#schooling');
+            const result = document.querySelector('#result');
+
+            myForm.addEventListener('submit', event => {
+                event.preventDefault();
+
+                fetch('/api/test/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        age: +age.value, 
+                        earning: +earning.value, 
+                        schooling: +schooling.value
+                    })
+                })
+                .then( response => response.json())
+                .then( data => result.innerHTML = data.diligent )
+                .catch( err => console.log(err))
+            })
+        })
+    </script>
+</html>
